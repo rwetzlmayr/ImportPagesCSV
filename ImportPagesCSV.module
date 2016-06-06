@@ -426,11 +426,15 @@ class ImportPagesCSV extends Process implements Module {
 		}
 
 		// import post-save data, like files
-		if($page->id && count($page->ImportPagesCSVData)) {
-			foreach($page->ImportPagesCSVData as $name => $value) {
-				$page->set($name, $value);
+		try {
+			if ($page->id && count($page->ImportPagesCSVData)) {
+				foreach ($page->ImportPagesCSVData as $name => $value) {
+					$page->set($name, $value);
+				}
+				$page->save();
 			}
-			$page->save();
+		} catch (WireException $e) {
+			wire('log')->save('importpagescsv', $e->getMessage());
 		}
 
 		return $page->id > 0; 
