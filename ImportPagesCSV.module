@@ -388,6 +388,7 @@ class ImportPagesCSV extends Process implements Module {
 	 */
 	protected function importPage(array $data, InputfieldForm $form) {
 
+		set_time_limit(0);
 		$page = new Page();
 		$page->parent = $this->parent; 
 		$page->template = $this->template; 
