@@ -464,6 +464,10 @@ class ImportPagesCSV extends Process implements Module {
 			// split delimited data to an array
 			$value = preg_split('/[\r\n\t|]+/', $value);
 			if ($field->maxFiles == 1) $value = array_shift($value);
+			// drop unreadable files
+			foreach($value as $key => $filename) {
+				if(strpos($filename, '://') === false && !is_readable($filename)) unset($value[$key]);
+			}
 			$data = $page->ImportPagesCSVData;
 			$data[$name] = $value;
 			$page->ImportPagesCSVData = $data;
